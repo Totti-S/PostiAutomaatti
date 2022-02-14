@@ -426,38 +426,6 @@ public class FXMLDocumentController implements Initializable{
             auto.setValue(null);
         }
     }
-    
-    private void memeExecute() {
-        ArrayList<String> middleUp = new ArrayList();
-        middleUp.add("60.966915"); middleUp.add("25.715999"); 
-        middleUp.add("63.067941"); middleUp.add("25.837805");
-        ArrayList<String> middleRight = new ArrayList();
-        middleRight.add("62.300202"); middleRight.add("28.376010"); 
-        middleRight.add("62.094320"); middleRight.add("23.042570");
-        ArrayList<String> upRight = new ArrayList();
-        upRight.add("63.067941"); upRight.add("25.837805");
-        upRight.add("62.885627"); upRight.add("28.350882");
-        ArrayList<String> downLeft = new ArrayList();
-        downLeft.add("60.966915"); downLeft.add("25.715999");
-        downLeft.add("61.214612"); downLeft.add("23.880427");
-        ArrayList<String> leftRight = new ArrayList();
-        leftRight.add("62.094320"); leftRight.add("23.042570");
-        leftRight.add("63.363337"); leftRight.add("23.469511");
-        ArrayList<String> rightRight = new ArrayList();
-        rightRight.add("62.300202"); rightRight.add("28.376010");                
-        rightRight.add("61.729262"); rightRight.add("29.191610");                
-
-        getSong("Erika.mp3");
-        mp.setStopTime(Duration.seconds(30));
-        mp.play();
-       
-        drawFunction(middleUp , 1);
-        drawFunction(middleRight , 1);
-        drawFunction(upRight , 1);
-        drawFunction(downLeft , 1);
-        drawFunction(leftRight , 1);
-        drawFunction(rightRight , 1);
-    }
 
     private void updateButton() {
         if (itemCombo.getValue() != null && packageCombo.getValue() != null && 
@@ -535,10 +503,7 @@ public class FXMLDocumentController implements Initializable{
     private void sendPackage(ComboBox<String> startA, ComboBox<String> endA, 
             ComboBox<String> sCity, ComboBox<String> eCity, ToggleGroup tg,
             Package p) {
-        if(p.getItem().getName().equals("Hitler")) {
-            memeExecute();
-            newLogEntry("Hitler uudelleen syntyi Suomeen");
-        } else if (startA.getValue() != null & endA.getValue() != null) {
+            if (startA.getValue() != null & endA.getValue() != null) {
                 /* Finding the coordinates from the object database*/
                 double start [] = dm.getCoordinates(startA.getValue());
                 double end [] = dm.getCoordinates(endA.getValue());
