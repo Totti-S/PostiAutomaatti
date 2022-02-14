@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="300.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ht.NewUserController">
+  <children>
+    <TextField fx:id="userTextField" layoutX="128.0" layoutY="63.0" onKeyReleased="#new_checkValues" prefWidth="135.0" />
+    <Label layoutX="47.0" layoutY="63.0" text="Käyttäjänimi" />
+    <Label layoutX="67.0" layoutY="102.0" text="Salasana" />
+    <Label layoutX="14.0" layoutY="134.0" text="Salasana uudelleen" />
+    <PasswordField fx:id="passwordField" layoutX="128.0" layoutY="99.0" onKeyReleased="#checkPassword" prefWidth="135.0" />
+    <PasswordField fx:id="password2Field" layoutX="128.0" layoutY="134.0" onKeyReleased="#checkPassword" prefWidth="135.0" />
+    <ComboBox id="questionBOx" fx:id="questionBox" layoutX="128.0" layoutY="222.0" onAction="#checkAnsField2" prefHeight="21.0" prefWidth="148.0" />
+    <Label alignment="TOP_RIGHT" contentDisplay="LEFT" layoutX="14.0" layoutY="225.0" prefWidth="101.0" text="Tarkistus kysyms" />
+    <Label alignment="CENTER" layoutX="71.0" layoutY="21.0" prefWidth="158.0" text="Uusi Käyttäjä" underline="true">
+      <font>
+        <Font size="18.0" />
+      </font>
+    </Label>
+    <Label layoutX="89.0" layoutY="322.0" prefHeight="32.0" prefWidth="123.0" text="">
+      <tooltip>
+        <Tooltip text="Empty Tooltip" fx:id="errorMessage" />
+      </tooltip>
+    </Label>
+    <Label layoutX="26.0" layoutY="258.0" text="Tarkistus vastaus" />
+    <TextField id="questionAns" fx:id="questionAnsField" layoutX="128.0" layoutY="258.0" onKeyReleased="#checkAnsField" prefWidth="148.0" />
+    <Button id="newAccontButton" fx:id="newAccountButton" layoutX="88.0" layoutY="322.0" mnemonicParsing="false" onAction="#newAccount" prefWidth="123.0" text="Luo uusi Käyttäjä" />
+    <Button fx:id="cancelNewUserButton" layoutX="108.0" layoutY="364.0" mnemonicParsing="false" onAction="#cancelNewUser" text="Peruuta" />
+  </children>
+</AnchorPane>

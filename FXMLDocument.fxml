@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.web.*?>
+
+<AnchorPane id="AnchorPane" fx:id="main" prefHeight="663.0000999999975" prefWidth="688.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ht.FXMLDocumentController">
+  <children>
+    <TabPane layoutX="0.0" layoutY="0.0" prefHeight="663.0" prefWidth="688.0" tabClosingPolicy="UNAVAILABLE">
+      <tabs>
+        <Tab text="Kartta">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <WebView fx:id="mapView" prefHeight="544.0" prefWidth="736.0" AnchorPane.bottomAnchor="71.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-41.0" AnchorPane.topAnchor="0.0" />
+                <Label layoutX="29.0" layoutY="609.0" minHeight="21.0" prefHeight="21.0" prefWidth="79.0" text="">
+                  <tooltip>
+                    <Tooltip text="" fx:id="saveMainError" />
+                  </tooltip>
+                </Label>
+                <Button id="saveButton" fx:id="saveMain" layoutX="20.0" layoutY="603.0" mnemonicParsing="false" onAction="#saveAllChanges" text="Tallenna">
+                  <tooltip>
+                    <Tooltip text="Tallentaa kaikki muutokset ohjelmassa tietokantaan" />
+                  </tooltip>
+                </Button>
+                <Button layoutX="128.0" layoutY="603.0" mnemonicParsing="false" onAction="#clearAutomats" prefWidth="129.0" text="Tyhjennä automaatit" />
+                <Button layoutX="128.0" layoutY="576.0" mnemonicParsing="false" onAction="#clearPaths" prefWidth="129.0" text="Tyhjennä reitit" />
+                <Button layoutX="283.0" layoutY="577.0" mnemonicParsing="false" onAction="#clearMap" text="Tyhjennä kartta" />
+                <Button fx:id="packageButton" layoutX="9.0" layoutY="577.0" mnemonicParsing="false" onAction="#makeNewPackacage" prefHeight="21.0" text="Luo paketti" />
+                <ComboBox fx:id="pointAutomat" layoutX="542.0" layoutY="603.0" prefHeight="21.0" prefWidth="134.0" promptText="Automaatti" />
+                <ComboBox fx:id="cityPoint" layoutX="542.0" layoutY="576.0" onAction="#updatePointAutomat" prefHeight="21.0" prefWidth="134.0" promptText="Kaupunki" />
+                <Button layoutX="404.0" layoutY="603.0" mnemonicParsing="false" onAction="#placeUpdate" prefWidth="124.0" text="Päivitä paikkatiedot" />
+                <Button id="packageButton" fx:id="findAutomat" layoutX="403.0" layoutY="576.0" mnemonicParsing="false" onAction="#drawAutomat" prefHeight="21.0" prefWidth="124.0" text="Etsi automaatti" />
+                <AnchorPane fx:id="packageMenu" minHeight="115.0" minWidth="443.0" prefHeight="115.0" prefWidth="686.0" visible="false" AnchorPane.bottomAnchor="517.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <children>
+                    <Button layoutX="659.0" layoutY="-1.0" minWidth="16.0" mnemonicParsing="false" onAction="#hideNewPackage" prefHeight="21.0" prefWidth="28.0" text="X">
+                      <font>
+                        <Font size="12.0" />
+                      </font>
+                    </Button>
+                    <ComboBox fx:id="itemCombo" layoutX="420.0" layoutY="26.0" onAction="#checkValues" prefHeight="21.0" prefWidth="113.0" promptText="Valitse esine" />
+                    <Label alignment="CENTER" layoutX="211.0" layoutY="4.0" prefHeight="31.0" prefWidth="265.0" text="Uusi Paketti" underline="true">
+                      <font>
+                        <Font size="18.0" fx:id="x1" />
+                      </font>
+                    </Label>
+                    <ComboBox fx:id="startCity" layoutX="14.0" layoutY="46.0" onAction="#updateStartAutomat" prefHeight="29.0" prefWidth="129.0" promptText="Lähtökaupunki" />
+                    <ComboBox fx:id="startAutomat" layoutX="15.0" layoutY="75.0" onAction="#checkValues" prefHeight="29.0" prefWidth="129.0" promptText="Automaatti" />
+                    <ComboBox fx:id="endAutomat" layoutX="155.0" layoutY="73.0" onAction="#checkValues" prefHeight="29.0" prefWidth="129.0" promptText="Automaatti" />
+                    <ComboBox fx:id="endCity" layoutX="155.0" layoutY="46.0" onAction="#updateEndAutomat" prefHeight="29.0" prefWidth="129.0" promptText="Kohdekaupunki" />
+                    <RadioButton fx:id="firstClass" contentDisplay="LEFT" layoutX="310.0" layoutY="46.0" mnemonicParsing="false" onAction="#checkValues" selected="false" text="1.Luokka" textAlignment="LEFT" wrapText="false">
+                      <toggleGroup>
+                        <ToggleGroup fx:id="packageClass" />
+                      </toggleGroup>
+                    </RadioButton>
+                    <RadioButton fx:id="secondClass" layoutX="310.0" layoutY="66.0" mnemonicParsing="false" onAction="#checkValues" selected="true" text="2.Luokka" toggleGroup="$packageClass" />
+                    <RadioButton fx:id="thirdClass" layoutX="310.0" layoutY="87.0" mnemonicParsing="false" onAction="#checkValues" selected="false" text="3.Luokka" toggleGroup="$packageClass" />
+                    <Button fx:id="newItem" layoutX="420.0" layoutY="80.0" mnemonicParsing="false" onAction="#newItemAction" prefWidth="113.0" text="Luo uusi esine" />
+                    <Button layoutX="606.0" layoutY="-2.0" mnemonicParsing="false" onAction="#resetAction" text="Reset" />
+                    <Label layoutX="574.0" layoutY="82.0" prefWidth="79.0" text="">
+                      <tooltip>
+                        <Tooltip text="" fx:id="errorSend" />
+                      </tooltip>
+                    </Label>
+                    <Button fx:id="sendPackageButton" layoutX="574.0" layoutY="80.0" mnemonicParsing="false" onAction="#sendPackageAction" prefWidth="79.0" text="Lähetä">
+                      <tooltip>
+                        <Tooltip text="Empty Tooltip" fx:id="sendToolTip" />
+                      </tooltip>
+                    </Button>
+                    <Label layoutX="546.0" layoutY="54.0" prefWidth="134.0" text="">
+                      <tooltip>
+                        <Tooltip text="Empty Tooltip" fx:id="errorMessage" />
+                      </tooltip>
+                    </Label>
+                    <Button id="createPackage" fx:id="createButton" layoutX="546.0" layoutY="52.0" mnemonicParsing="false" onAction="#createPackage" text="Luo Paketti Varastoon">
+                      <tooltip>
+                        <Tooltip text="" fx:id="createPackageTip" />
+                      </tooltip>
+                    </Button>
+                    <ComboBox id="packageMenu" fx:id="packageCombo" layoutX="420.0" layoutY="52.0" onAction="#checkValues" prefHeight="21.0" prefWidth="113.0" promptText="Valitse paketti" />
+                    <TextField fx:id="lengthMeter" editable="false" layoutX="107.0" layoutY="11.0" prefWidth="74.0" promptText="" />
+                    <Label layoutX="47.0" layoutY="14.0" text="Etäisyys :" />
+                    <Label layoutX="185.0" layoutY="14.0" text="Km" />
+                  </children>
+                </AnchorPane>
+                <Button layoutX="296.0" layoutY="603.0" mnemonicParsing="false" onAction="#getHelpAction" prefWidth="79.0" text="Help" />
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab text="Paketit">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <ListView fx:id="packageView" layoutX="0.0" layoutY="38.0" onMouseClicked="#check_Pa_ValuesM" prefHeight="376.0" prefWidth="695.0" />
+                <RadioButton fx:id="paFirstClass" contentDisplay="LEFT" layoutX="363.0" layoutY="496.0" mnemonicParsing="false" selected="false" text="1.Luokka" textAlignment="LEFT" wrapText="false">
+                  <toggleGroup>
+                    <ToggleGroup fx:id="paClass" />
+                  </toggleGroup>
+                </RadioButton>
+                <RadioButton fx:id="paSecondClass" layoutX="363.0" layoutY="520.0" mnemonicParsing="false" selected="true" text="2.Luokka" toggleGroup="$paClass" />
+                <RadioButton fx:id="paThirdClass" layoutX="363.0" layoutY="545.0" mnemonicParsing="false" selected="false" text="3.Luokka" toggleGroup="$paClass" />
+                <TextField id="lengthMeter" fx:id="lengthPaMeter" editable="false" layoutX="225.0" layoutY="427.0" prefWidth="74.0" promptText="" />
+                <ComboBox id="startCity" fx:id="paStartCity" layoutX="174.0" layoutY="469.0" onAction="#update_Pa_StartAutomat" prefHeight="21.0" prefWidth="156.0" promptText="Lähtökaupunki" />
+                <ComboBox id="startAutomat" fx:id="paStartAutomat" layoutX="174.0" layoutY="499.0" onAction="#check_Pa_Values" prefHeight="21.0" prefWidth="156.0" promptText="Automaatti" />
+                <ComboBox id="endAutomat" fx:id="paEndAutomat" layoutX="174.0" layoutY="558.0" onAction="#check_Pa_Values" prefHeight="20.999900000002526" prefWidth="156.0" promptText="Automaatti" />
+                <ComboBox id="endCity" fx:id="paEndCity" layoutX="174.0" layoutY="528.0" onAction="#updatePaEndAutomat" prefHeight="21.0" prefWidth="156.0" promptText="Kohdekaupunki" />
+                <Button id="paResetButton" layoutX="310.0" layoutY="591.0" mnemonicParsing="false" onAction="#resetPaAction" prefWidth="66.0" text="Reset" />
+                <Label id="paSendError" layoutX="14.0" layoutY="471.0" prefWidth="129.0" text="">
+                  <tooltip>
+                    <Tooltip text="Empty Tooltip" fx:id="paSendError" />
+                  </tooltip>
+                </Label>
+                <Button fx:id="send_pa_package" layoutX="14.0" layoutY="480.0" mnemonicParsing="false" onAction="#sendPackageListView" prefWidth="129.0" text="Lähetä Paketti">
+                  <tooltip>
+                    <Tooltip text="Empty Tooltip" fx:id="paSendTooltip" />
+                  </tooltip>
+                </Button>
+                <Button fx:id="delete_pa_button" layoutX="14.0" layoutY="512.0" mnemonicParsing="false" onAction="#deletePackage" prefWidth="129.0" text="Poista Paketti" />
+                <Button fx:id="deleteAllButton" layoutX="14.0" layoutY="544.0" mnemonicParsing="false" onAction="#deleteAllPackage" prefWidth="129.0" text="Poista Kaikki Paketti" />
+                <Label id="paSendError" layoutX="495.0" layoutY="553.0" prefHeight="29.0" prefWidth="148.0" text="">
+                  <tooltip>
+                    <Tooltip text="" fx:id="disableSaveTooltip" />
+                  </tooltip>
+                </Label>
+                <Button fx:id="saveButton" layoutX="495.0" layoutY="553.0" mnemonicParsing="false" onAction="#saveAllChanges" text="Tallenna Kaikki">
+                  <tooltip>
+                    <Tooltip text="Empty Tooltip" fx:id="paSaveTooltip" />
+                  </tooltip>
+                </Button>
+                <Label fx:id="successLabel" alignment="CENTER" layoutX="522.0" layoutY="503.0" prefWidth="129.00009999999747" text="Tallennus Onnistui!" textAlignment="LEFT" textFill="#14ff00" visible="false">
+                  <font>
+                    <Font size="14.0" />
+                  </font>
+                </Label>
+                <Label layoutX="159.0" layoutY="430.0" text="Etäisyys:" />
+                <Label layoutX="310.0" layoutY="433.0" text="Km" />
+                <Label alignment="CENTER" font="$x1" layoutX="283.0" layoutY="4.0" text="Paketti Varasto" underline="true" />
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab text="Loki">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <ListView id="packageView" fx:id="logView" layoutX="-1.0" layoutY="53.0" onMouseClicked="#check_Pa_ValuesM" prefHeight="548.0" prefWidth="687.0" />
+                <Label layoutX="14.0" layoutY="14.0" prefHeight="24.0" prefWidth="172.0" text="Tapahtuma Loki">
+                  <font>
+                    <Font size="20.0" />
+                  </font>
+                </Label>
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+      </tabs>
+    </TabPane>
+  </children>
+</AnchorPane>

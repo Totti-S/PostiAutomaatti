@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="388.0" prefWidth="321.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ht.PackageController">
+  <children>
+    <Text layoutX="95.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Luo uusi Esine">
+      <font>
+        <Font size="22.0" />
+      </font>
+    </Text>
+    <TextField fx:id="nameField" layoutX="83.0" layoutY="70.0" prefWidth="162.0" promptText="Nimi" />
+    <TextField fx:id="sizeField" layoutX="83.0" layoutY="125.0" prefWidth="162.0" promptText="Koko dm^3" />
+    <TextField fx:id="weightField" layoutX="83.0" layoutY="172.0" prefWidth="162.0" promptText="Paino    kg" text="" />
+    <CheckBox id="braka" fx:id="yourSoul" layoutX="128.0" layoutY="213.0" mnemonicParsing="false" text="Särkyvää" />
+    <Button fx:id="cancelButton" layoutX="75.0" layoutY="280.0" mnemonicParsing="false" onAction="#cancelAction" text="Peruuta" />
+    <Button fx:id="createNew" layoutX="214.0" layoutY="280.0" mnemonicParsing="false" onAction="#createNewThing" text="Luo" />
+  </children>
+</AnchorPane>

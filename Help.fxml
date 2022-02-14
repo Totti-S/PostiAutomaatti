@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="578.0" prefWidth="433.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <children>
+    <TextArea layoutX="23.0" layoutY="75.0" prefHeight="453.0" prefWidth="387.0" text="Lähetyluokat:&#10;1. luokka = max 150km, kaikki hajoava hajoaa&#10;2. luokka = 100 dm^3 isompi paketti kuin esine ; hajoava hajoaa&#10;3. luokka = Jos paketti on pieni (alle 300 dm^3) tai esine kevyt (alle 10kg) ; hajoava hajoaa&#10;&#10;&quot;Etäisyys&quot; kertoo automaattien välisen matkan&#10;&quot;Tallenna&quot; tallentaa kaikki muutokset ohjelmassa myöhempää käyttö varten&#10;&quot;Päivitä paikkatiedot&quot; = Jos jostain syystä ei ole päivittynyt kaikki automaatit niin voit tuoda kaikki automaatit tällä&#10;" wrapText="true" />
+    <Label alignment="CENTER" layoutX="192.0" layoutY="26.0" text="HELP" underline="true">
+      <font>
+        <Font size="22.0" />
+      </font>
+    </Label>
+  </children>
+</AnchorPane>

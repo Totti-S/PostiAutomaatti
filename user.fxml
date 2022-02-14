@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="177.0" prefWidth="398.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ht.UserController">
+  <children>
+    <Label alignment="CENTER" layoutX="139.0" layoutY="14.0" prefHeight="23.0" prefWidth="120.0" text="USER LOGIN" />
+    <Button fx:id="loginButton" layoutX="167.0" layoutY="116.0" mnemonicParsing="false" onAction="#loginAction" text="Kirjaudu" />
+    <TextField fx:id="userName" layoutX="99.0" layoutY="52.0" prefWidth="200.0" promptText="Käyttäjänimi" />
+    <PasswordField fx:id="passwordField" layoutX="99.0" layoutY="88.0" prefWidth="200.0" promptText="Salasana" />
+    <Text fx:id="usernameError" fill="RED" layoutX="309.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Väärä nimi!" visible="false" />
+    <Text id="usernameError" fx:id="passwordError" fill="RED" layoutX="309.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Väärä salasana!" visible="false" />
+    <Button layoutX="208.0" layoutY="142.0" mnemonicParsing="false" onAction="#openRecoverPassword" text="Unohtuiko salasana?" />
+    <Button layoutX="60.0" layoutY="142.0" mnemonicParsing="false" onAction="#openNewAccountView" prefWidth="129.0" text="Luo uusi käyttäjä" />
+  </children>
+</AnchorPane>
