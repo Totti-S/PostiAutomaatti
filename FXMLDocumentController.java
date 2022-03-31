@@ -3,32 +3,12 @@ package ht;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.Tooltip;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.text.Font;
-import javafx.scene.web.WebView;
+import javafx.scene.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -568,6 +548,29 @@ public class FXMLDocumentController implements Initializable{
         } catch (URISyntaxException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    private void lolxd1(ComboBox sCity, ComboBox<String> sAuto, ComboBox eCity, 
+            ComboBox<String> eAuto, Button b, Tooltip error, boolean value, RadioButton first) {
+        if(sCity == null) {
+            b.setDisable(true);
+        }
+        if(eCity == null) {
+            b.setDisable(true);
+        }
+        if(sAuto == null) {
+            b.setDisable(true);
+        }
+        if(eAuto == null) {
+            b.setDisable(true);
+        }
+        if(sCity == null) {
+            b.setDisable(true);
+        }
+        if(sCity == null) {
+            b.setDisable(true);
+        }
+        
     }
     
     private void lolxd(ComboBox sCity, ComboBox<String> sAuto, ComboBox eCity, 
