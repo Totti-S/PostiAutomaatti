@@ -552,25 +552,62 @@ public class FXMLDocumentController implements Initializable{
     
     private void lolxd1(ComboBox sCity, ComboBox<String> sAuto, ComboBox eCity, 
             ComboBox<String> eAuto, Button b, Tooltip error, boolean value, RadioButton first) {
-        if(sCity == null) {
+        startCity = sCity.getValue();
+        endCity = eCity.getValue();
+        startAuto = sAuto.getValue();
+        endAuto = eAuto.getValue();
+        item = itemCombo.getValue();
+        box = packageCombo.getValue();
+        readyBox = packageView.getSelectionModel().isEmpty(); % boolean
+        
+        error.setText("");
+     
+        if(startCity == null) {
             b.setDisable(true);
+            error.setText(error.getText() + "\nValitse lähtökaupunki");
         }
-        if(eCity == null) {
+        else if(endCity == null) {
             b.setDisable(true);
-        }
-        if(sAuto == null) {
-            b.setDisable(true);
-        }
-        if(eAuto == null) {
-            b.setDisable(true);
-        }
-        if(sCity == null) {
-            b.setDisable(true);
-        }
-        if(sCity == null) {
-            b.setDisable(true);
+            error.setText(error.getText() + "\nValitse kohdekaupunki");
         }
         
+        if(startAuto == null) {
+            b.setDisable(true);
+            error.setText(error.getText() + "\nValitse lähtöautomaatti");
+        }
+        else if(endAuto == null) {
+            b.setDisable(true);
+            error.setText(error.getText() + "\nValitse kohdeautomaatti");
+        }
+        else if(startAuto == endAuto) {
+            b.setDisable(true);
+            error.setText("\nPakettia ei voi lähettää samaan automaattiin\n\t-Tarkista automaattien arvot");
+        }
+        else if(getDistance(startAuto,endAuto) > 150 && first.isSelected()) {
+            b.setDisable(true);
+            error.setText("\nLähetysluokalle liian pitkä matka");
+        }
+        
+        if(value) {
+            if(itemCombo.getValue() == null) {
+                b.setDisable(true);
+                error.setText(error.getText() + "\nValitse esine");
+            }
+            else if(packageCombo.getValue() == null) {
+                b.setDisable(true);
+                error.setText(error.getText() + "\nValitse paketti");
+            }
+            else if(item.getSize() > dm.parseSize(box)) {
+                b.setDisable(true);
+                error.setText(error.getText() + "\nLiian pieni paketti esineelle");
+            }
+        }
+        else {
+            if(readyBox) {
+                b.setDisable(true);
+                error.setText(error.getText() + "\nValitse paketti");
+            }
+        }
     }
     
     private void lolxd(ComboBox sCity, ComboBox<String> sAuto, ComboBox eCity, 
@@ -578,11 +615,10 @@ public class FXMLDocumentController implements Initializable{
         // I recommend just to trust <if> 
         if (sCity.getValue() != null && sAuto.getValue() != null 
                 && eCity.getValue() != null && eAuto.getValue() != null 
-                && ((value && itemCombo.getValue() != null  && packageCombo.getValue() != null) 
-                || (!value && !packageView.getSelectionModel().isEmpty()))
-                && ((value && itemCombo.getValue().getSize() <= dm.parseSize(packageCombo.getValue())) || !value)
-                && sAuto.getValue() != eAuto.getValue() && (getDistance(sAuto.getValue(),eAuto.getValue()) <= 150 
-                || !first.isSelected()) ) {
+                && ((value && itemCombo.getValue() != null  && packageCombo.getValue() != null) || (!value && !packageView.getSelectionModel().isEmpty()))
+                && ((itemCombo.getValue().getSize() <= dm.parseSize(packageCombo.getValue())) || !value)
+                && sAuto.getValue() != eAuto.getValue() 
+                && (getDistance(sAuto.getValue(),eAuto.getValue()) <= 150 || !first.isSelected()) ) {
         // </if> Trust me, i know what i'am doing
                 b.setDisable(false); 
         } else {
