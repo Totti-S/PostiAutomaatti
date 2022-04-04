@@ -122,12 +122,13 @@ public class FXMLDocumentController implements Initializable{
         placeSetClear(); // Getting all the cities to comboboxes
         packageUpdate();
         updateButton();
-        updateSendButton();
-        update_pa_SendButton();
-        update_pa_DeleteButton();
+        updateSendButton(startCity,startAutomat,endCity, endAutomat, 
+            sendPackageButton, errorSend, true, firstClass);
+        updateSendButton(paStartCity, paStartAutomat, paStartCity, paEndAutomat,
+            send_pa_package, paSendError, false, paFirstClass);
+        updateDeleteButtons();
         saveButton.setDisable(true);
         saveMain.setDisable(true);
-        update_pa_DeleteAllButton();
         createPackageTip.setText("Luodaan paketti varastoon\nPaketit ovat nähtävissä 'paketit' - välilehdessä");
         sendToolTip.setText("Lähetetään paketti annettujen tietojen perusteella.");
         paSendTooltip.setText("Lähetetään valittu paketti listasta");
@@ -146,33 +147,33 @@ public class FXMLDocumentController implements Initializable{
     /* AUTOMAT UPDATE ACTIONS */
     
     @FXML
-    private void updatePointAutomat(ActionEvent event) {
+    private void updatePointAutomat(ActionEvent e) {
         updateAutomat(cityPoint, pointAutomat);
         pointAutomat.getItems().add("Kaikki automaatit");
     }
 
     @FXML
-    private void updateEndAutomat(ActionEvent event) {
+    private void updateEndAutomat(ActionEvent e) {
         updateAutomat(endCity, endAutomat);
-        updateSendButton();
+        updateSendButton(true);
     }
 
     @FXML
-    private void updateStartAutomat(ActionEvent event) {
+    private void updateStartAutomat(ActionEvent e) {
         updateAutomat(startCity, startAutomat);
-        updateSendButton();
+        updateSendButton(true);
     }
     
     @FXML
-    private void update_Pa_StartAutomat(ActionEvent event) {
+    private void update_Pa_StartAutomat(ActionEvent e) {
         updateAutomat(paStartCity, paStartAutomat);
-        update_pa_SendButton();
+        updateSendButton(false);
     }
 
     @FXML
-    private void updatePaEndAutomat(ActionEvent event) {
+    private void updatePaEndAutomat(ActionEvent e) {
         updateAutomat(paEndCity, paEndAutomat);
-        update_pa_SendButton();
+        updateSendButton(false);
     }
 
     /* SOME OTHER RANDOM SHIT */
@@ -209,16 +210,12 @@ public class FXMLDocumentController implements Initializable{
 
     @FXML
     private void makeNewPackacage(ActionEvent event) {
-        if (!packageMenu.isVisible()) {
-            packageMenu.setVisible(true);
-        }
+        packageMenu.setVisible(true);
     }
     
     @FXML
     private void hideNewPackage(ActionEvent event) {
-        if (packageMenu.isVisible()) {
-            packageMenu.setVisible(false);
-        }
+        packageMenu.setVisible(false);
     }
     
     /* RESET BUTTON ACTIONS */
@@ -226,12 +223,12 @@ public class FXMLDocumentController implements Initializable{
     @FXML
     private void resetAction(ActionEvent event) {
         updateAutomat(startCity, startAutomat);
-        updateAutomat(endCity,endAutomat);
+        updateAutomat(endCity, endAutomat);
         cityUpdate(startCity);
         cityUpdate(endCity);
         itemUpdate(itemCombo);
         makePackageComboValues();
-        updateSendButton();
+        updateSendButton(true);
         updateButton();
         updateDistanceMeter();
     }
@@ -243,9 +240,8 @@ public class FXMLDocumentController implements Initializable{
         cityUpdate(paStartCity);
         cityUpdate(paEndCity);
         packageView.getSelectionModel().clearSelection();
-        update_pa_SendButton();
-        update_pa_DeleteButton();
-        update_pa_DeleteAllButton();
+        updateSendButton(false);
+        updateDeleteButtons();
         updateDistancePaMeter();
     }
     
@@ -291,20 +287,20 @@ public class FXMLDocumentController implements Initializable{
     @FXML
     private void checkValues(ActionEvent event) {
         updateButton();
-        updateSendButton();
+        updateSendButton(true);
         updateDistanceMeter();
     }
     
     @FXML
     private void check_Pa_Values(ActionEvent event) {
-        update_pa_SendButton();
+        updateSendButton(false);
         updateDistancePaMeter();
     }
     
     @FXML
     private void check_Pa_ValuesM(MouseEvent event) {
-        update_pa_SendButton();
-        update_pa_DeleteButton();
+        updateSendButton(false);
+        updateDeleteButtons();
     }
     
     @FXML
@@ -320,7 +316,7 @@ public class FXMLDocumentController implements Initializable{
         newLogEntry("Tehtiin uusi paketti: " + item.getName() + 
                 ", jonka koko on " + size + " dm^3");
         dm.insertPackage(pa);
-        update_pa_DeleteAllButton();
+        updateDeleteButtons();
     }
     
 
@@ -341,10 +337,9 @@ public class FXMLDocumentController implements Initializable{
 
     @FXML
     private void deleteAllPackage(ActionEvent event) {
-        int maara = 0;
         packageView.getSelectionModel().clearSelection();
         packageView.getSelectionModel().selectAll();
-        maara = packageView.getItems().size();
+        int maara = packageView.getItems().size();
         dm.deleteAllPackages();
         packageView.getItems().clear();
         newLogEntry("Poistettiin kaikki paketit (" + maara + ")");
@@ -395,16 +390,13 @@ public class FXMLDocumentController implements Initializable{
     
     private void updateAutomat(ComboBox<String> city ,ComboBox<String> auto) {
         if (city.getValue() != null ) {
-            auto.getItems().clear();
             ArrayList<String> al = dm.getAutomats(city.getValue());
             for (String name : al) {
                 auto.getItems().add(name);
-            }
-            auto.setValue(null);      
-        } else {
-            auto.getItems().clear();
-            auto.setValue(null);
+            }     
         }
+        auto.getItems().clear();
+        auto.setValue(null);
     }
 
     private void updateButton() {
@@ -430,25 +422,97 @@ public class FXMLDocumentController implements Initializable{
             createButton.setDisable(true);
         }
     }
-    
-    private void updateSendButton() {
-        if((itemCombo.getValue() != null)) {
-            if(itemCombo.getValue().getName().equals("Hitler")) {
-                sendPackageButton.setDisable(false);
-            } else {
-                lolxd(startCity,startAutomat,endCity, endAutomat, 
-                    sendPackageButton, errorSend, true, firstClass);
-            }
+ 
+    private void updateSendButton(boolean value) {
 
-        } else  {
-            lolxd(startCity,startAutomat,endCity, endAutomat, 
-                sendPackageButton, errorSend, true, firstClass);
+    	if(value) {
+    		ComboBox sCity = startCity.getValue();
+        	ComboBox eCity= endCity.getValue();
+        	ComboBox<String> sAuto = startAutomat.getValue();
+        	ComboBox<String> eAuto = endAutomat.getValue();
+        	Tooltip error = errorSend;
+        	RadioButton first = firstClass;
+        	Button sendButton = sendPackageButton;
+        } 
+        else {
+        	ComboBox sCity = paStartCity.getValue();
+        	ComboBox eCity= paEndCity.getValue();
+        	ComboBox<String> sAuto = paStartAutomat.getValue();
+        	ComboBox<String> eAuto = paEndAutomat.getValue();
+        	Tooltip error = peSendError;
+        	RadioButton first = paFirstClass;
+        	Button sendButton = send_pa_package;
         }
+
+        item = itemCombo.getValue();
+        box = packageCombo.getValue();
+        readyBox = packageView.getSelectionModel().isEmpty(); // boolean; valmispaketti
+        trueValue = true; // Tarkistusarvo, jos laitetaan nappi päälle 
+        
+        error.setText("");
+     
+        if(sCity == null) {
+            b.setDisable(true);
+            trueValue = false;
+            error.setText(error.getText() + "\nValitse lähtökaupunki");
+        }
+        else if(eCity == null) {
+            b.setDisable(true);
+            trueValue = false;
+            error.setText(error.getText() + "\nValitse kohdekaupunki");
+        }
+        
+        if(sAuto == null) {
+            b.setDisable(true);
+            trueValue = false;
+            error.setText(error.getText() + "\nValitse lähtöautomaatti");
+        }
+        else if(eAuto == null) {
+            b.setDisable(true);
+            trueValue = false;
+            error.setText(error.getText() + "\nValitse kohdeautomaatti");
+        }
+        else if(sAuto == eAuto) {
+            b.setDisable(true);
+            trueValue = false;
+            error.setText("\nPakettia ei voi lähettää samaan automaattiin\n\t-Tarkista automaattien arvot");
+        }
+        else if(getDistance(sAuto,eAuto) > 150 && first.isSelected()) {
+            b.setDisable(true);
+            trueValue = false;
+            error.setText("\nLähetysluokalle liian pitkä matka");
+        }
+        
+        if(value) {
+            if(itemCombo.getValue() == null) {
+                b.setDisable(true);
+                trueValue = false;
+                error.setText(error.getText() + "\nValitse esine");
+            }
+            else if(packageCombo.getValue() == null) {
+                b.setDisable(true);
+                trueValue = false;
+                error.setText(error.getText() + "\nValitse paketti");
+            }
+            else if(item.getSize() > dm.parseSize(box)) {
+                b.setDisable(true);
+                trueValue = false;
+                error.setText(error.getText() + "\nLiian pieni paketti esineelle");
+            }
+        }
+        else {
+            if(readyBox) {
+                b.setDisable(true);
+                trueValue = false;
+                error.setText(error.getText() + "\nValitse paketti");
+            }
+        }
+        if(trueValue) {
+            b.setDisavle(false);
+        }
+        
     }
-    
-    private void update_pa_SendButton() {
-        lolxd(paStartCity, paStartAutomat, paStartCity, paEndAutomat,
-            send_pa_package, paSendError, false, paFirstClass);
+        
     }
         
     private void makePackageComboValues() {
@@ -550,83 +614,6 @@ public class FXMLDocumentController implements Initializable{
         }
     }
     
-    private void lolxd1(ComboBox sCity, ComboBox<String> sAuto, ComboBox eCity, 
-            ComboBox<String> eAuto, Button b, Tooltip error, boolean value, RadioButton first) {
-        startCity = sCity.getValue();
-        endCity = eCity.getValue();
-        startAuto = sAuto.getValue();
-        endAuto = eAuto.getValue();
-        item = itemCombo.getValue();
-        box = packageCombo.getValue();
-        readyBox = packageView.getSelectionModel().isEmpty(); % boolean; valmispaketti
-        trueValue = true; % Tarkistusarvo, jos laitetaan nappi päälle 
-        
-        error.setText("");
-     
-        if(startCity == null) {
-            b.setDisable(true);
-            trueValue = false;
-            error.setText(error.getText() + "\nValitse lähtökaupunki");
-        }
-        else if(endCity == null) {
-            b.setDisable(true);
-            trueValue = false;
-            error.setText(error.getText() + "\nValitse kohdekaupunki");
-        }
-        
-        if(startAuto == null) {
-            b.setDisable(true);
-            trueValue = false;
-            error.setText(error.getText() + "\nValitse lähtöautomaatti");
-        }
-        else if(endAuto == null) {
-            b.setDisable(true);
-            trueValue = false;
-            error.setText(error.getText() + "\nValitse kohdeautomaatti");
-        }
-        else if(startAuto == endAuto) {
-            b.setDisable(true);
-            trueValue = false;
-            error.setText("\nPakettia ei voi lähettää samaan automaattiin\n\t-Tarkista automaattien arvot");
-        }
-        else if(getDistance(startAuto,endAuto) > 150 && first.isSelected()) {
-            b.setDisable(true);
-            trueValue = false;
-            error.setText("\nLähetysluokalle liian pitkä matka");
-        }
-        
-        if(value) {
-            if(itemCombo.getValue() == null) {
-                b.setDisable(true);
-                trueValue = false;
-                error.setText(error.getText() + "\nValitse esine");
-            }
-            else if(packageCombo.getValue() == null) {
-                b.setDisable(true);
-                trueValue = false;
-                error.setText(error.getText() + "\nValitse paketti");
-            }
-            else if(item.getSize() > dm.parseSize(box)) {
-                b.setDisable(true);
-                trueValue = false;
-                error.setText(error.getText() + "\nLiian pieni paketti esineelle");
-            }
-        }
-        else {
-            if(readyBox) {
-                b.setDisable(true);
-                trueValue = false;
-                error.setText(error.getText() + "\nValitse paketti");
-            }
-        }
-        if(trueValue) {
-            b.setDisavle(false);
-        }
-        
-    }
-    
-    
-    
     private void drawFunction(ArrayList al, int speed) {
         mapView.getEngine().executeScript("document.createPath("
         +al +", \"red\" ,"+ speed +")");
@@ -641,7 +628,7 @@ public class FXMLDocumentController implements Initializable{
 
     public void newLogEntry(String string) {
         dm.makeNewLogEntry(string);
-        logView.getItems().add(dm.getLastLogEntry());
+        logView.getItems().add(string);
         updateSaveButton();
     }
     
@@ -681,21 +668,18 @@ public class FXMLDocumentController implements Initializable{
         return false;
     }
 
-    private void update_pa_DeleteButton() {
-        if (packageView.getSelectionModel().isEmpty() || packageView.getItems().isEmpty()) {
+    private void updateDeleteButtons() {
+    	if (packageView.getItems().isEmpty()) {
+    		delete_pa_button.setDisable(true);
+    		deleteAllButton.setDisable(true);
+    	}
+        else if (packageView.getSelectionModel().isEmpty()) {
             delete_pa_button.setDisable(true);
         } else {
             delete_pa_button.setDisable(false);
-        }
-        
-    }
-    
-    private void update_pa_DeleteAllButton() {
-        if (packageView.getItems().isEmpty()) {
-            deleteAllButton.setDisable(true);
-        } else {
             deleteAllButton.setDisable(false);
         }
+        
     }
 
     private void updateDistanceMeter() {
