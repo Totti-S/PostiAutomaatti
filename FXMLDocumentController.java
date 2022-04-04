@@ -558,110 +558,74 @@ public class FXMLDocumentController implements Initializable{
         endAuto = eAuto.getValue();
         item = itemCombo.getValue();
         box = packageCombo.getValue();
-        readyBox = packageView.getSelectionModel().isEmpty(); % boolean
+        readyBox = packageView.getSelectionModel().isEmpty(); % boolean; valmispaketti
+        trueValue = true; % Tarkistusarvo, jos laitetaan nappi päälle 
         
         error.setText("");
      
         if(startCity == null) {
             b.setDisable(true);
+            trueValue = false;
             error.setText(error.getText() + "\nValitse lähtökaupunki");
         }
         else if(endCity == null) {
             b.setDisable(true);
+            trueValue = false;
             error.setText(error.getText() + "\nValitse kohdekaupunki");
         }
         
         if(startAuto == null) {
             b.setDisable(true);
+            trueValue = false;
             error.setText(error.getText() + "\nValitse lähtöautomaatti");
         }
         else if(endAuto == null) {
             b.setDisable(true);
+            trueValue = false;
             error.setText(error.getText() + "\nValitse kohdeautomaatti");
         }
         else if(startAuto == endAuto) {
             b.setDisable(true);
+            trueValue = false;
             error.setText("\nPakettia ei voi lähettää samaan automaattiin\n\t-Tarkista automaattien arvot");
         }
         else if(getDistance(startAuto,endAuto) > 150 && first.isSelected()) {
             b.setDisable(true);
+            trueValue = false;
             error.setText("\nLähetysluokalle liian pitkä matka");
         }
         
         if(value) {
             if(itemCombo.getValue() == null) {
                 b.setDisable(true);
+                trueValue = false;
                 error.setText(error.getText() + "\nValitse esine");
             }
             else if(packageCombo.getValue() == null) {
                 b.setDisable(true);
+                trueValue = false;
                 error.setText(error.getText() + "\nValitse paketti");
             }
             else if(item.getSize() > dm.parseSize(box)) {
                 b.setDisable(true);
+                trueValue = false;
                 error.setText(error.getText() + "\nLiian pieni paketti esineelle");
             }
         }
         else {
             if(readyBox) {
                 b.setDisable(true);
+                trueValue = false;
                 error.setText(error.getText() + "\nValitse paketti");
             }
         }
+        if(trueValue) {
+            b.setDisavle(false);
+        }
+        
     }
     
-    private void lolxd(ComboBox sCity, ComboBox<String> sAuto, ComboBox eCity, 
-            ComboBox<String> eAuto, Button b, Tooltip error, boolean value, RadioButton first) {
-        // I recommend just to trust <if> 
-        if (sCity.getValue() != null && sAuto.getValue() != null 
-                && eCity.getValue() != null && eAuto.getValue() != null 
-                && ((value && itemCombo.getValue() != null  && packageCombo.getValue() != null) || (!value && !packageView.getSelectionModel().isEmpty()))
-                && ((itemCombo.getValue().getSize() <= dm.parseSize(packageCombo.getValue())) || !value)
-                && sAuto.getValue() != eAuto.getValue() 
-                && (getDistance(sAuto.getValue(),eAuto.getValue()) <= 150 || !first.isSelected()) ) {
-        // </if> Trust me, i know what i'am doing
-                b.setDisable(false); 
-        } else {
-            error.setText("");
-            b.setDisable(true);
-            if (sAuto.getValue() != null && eAuto.getValue() != null 
-                    && sAuto.getValue() == eAuto.getValue()) {
-                error.setText("\nPakettia ei voi lähettää samaan automaattiin\n\t-Tarkista automaattien arvot");
-            } else if (sAuto.getValue() != null && eAuto.getValue() != null && 
-                    (getDistance(sAuto.getValue(),eAuto.getValue()) > 150 && first.isSelected()) ) {
-                error.setText("\nLähetysluokalle liian pitkä matka");
-            }
-            if(sCity.getValue() == null) {
-                error.setText(error.getText() + "\nValitse lähtökaupunki");
-            }
-            if(sAuto.getValue() == null) {
-                error.setText(error.getText() + "\nValitse lähtöautomaatti");
-            }
-            if(eCity.getValue() == null) {
-                error.setText(error.getText() + "\nValitse kohdekaupunki");
-            }
-            if(eAuto.getValue() == null) {
-                error.setText(error.getText() + "\nValitse kohdeautomaatti");
-            }
-            if (value) {
-                if(itemCombo.getValue() != null && packageCombo.getValue() != null && 
-        itemCombo.getValue().getSize() > dm.parseSize(packageCombo.getValue())) {
-                    error.setText(error.getText() + "\nLiian pieni paketti esineelle");
-                }
-                if(itemCombo.getValue() == null) {
-                    error.setText(error.getText() + "\nValitse esine");
-                }
-                if(packageCombo.getValue() == null) {
-                    error.setText(error.getText() + "\nValitse paketti");
-                }
-            } else {
-                if(packageView.getSelectionModel().isEmpty()) {
-                    error.setText(error.getText() + "\nValitse paketti");
-                }   
-            }
-            error.setText(error.getText().substring(1)); 
-        }
-    }
+    
     
     private void drawFunction(ArrayList al, int speed) {
         mapView.getEngine().executeScript("document.createPath("
